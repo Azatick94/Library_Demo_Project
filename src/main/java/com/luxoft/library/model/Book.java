@@ -1,9 +1,6 @@
 package com.luxoft.library.model;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -15,14 +12,16 @@ import java.util.Set;
 @Table(name = "books", uniqueConstraints = {@UniqueConstraint(columnNames = {"name"}, name = "unique_book_name")})
 @Getter
 @Setter
-@ToString(callSuper = true)
+@AllArgsConstructor
 @NoArgsConstructor
+@ToString(callSuper = true)
 public class Book extends AbstractBaseEntity {
 
     private String name;
 
-    // specify hibernate to save enum as String
-    @Enumerated(EnumType.STRING)
+    @ManyToOne() //  fetch = FetchType.LAZY
+    // join column genre_id
+    @JoinColumn(name = "genre_id")
     private Genre genre;
 
     @ManyToMany(fetch = FetchType.LAZY)

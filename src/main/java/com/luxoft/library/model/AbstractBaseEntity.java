@@ -8,14 +8,10 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
-@Setter
-@Getter
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 public class AbstractBaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 }
