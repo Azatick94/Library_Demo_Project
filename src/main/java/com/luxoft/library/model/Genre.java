@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 //@Data
 //@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
+@ToString(callSuper = true, exclude = {"books"})
 public class Genre extends AbstractBaseEntity {
 
     private String value;

@@ -3,15 +3,15 @@ package com.luxoft.library.controllers;
 import com.luxoft.library.controllers.testdata.BookData;
 import com.luxoft.library.model.Book;
 import com.luxoft.library.model.Genre;
-import com.luxoft.library.repository.BookRepository;
+import com.luxoft.library.repository.datajpa.BookRepository;
 import com.luxoft.library.service.BookService;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +20,9 @@ import static com.luxoft.library.controllers.testdata.BookData.prepareListOfBook
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@ExtendWith(MockitoExtension.class)
+// another way to init Mockito
+//@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @DisplayName("BookService")
 class BookServiceTest {
 
@@ -31,11 +33,14 @@ class BookServiceTest {
     @InjectMocks
     private BookService bookService;
 
-    @BeforeAll
-    public void init() {
-        // mockito initialization
-        MockitoAnnotations.openMocks(this);
-    }
+
+// another way to init Mockito
+//
+//    @BeforeAll
+//    public void init() {
+//        // mockito initialization
+////        MockitoAnnotations.openMocks(this);
+//    }
 
     @DisplayName("getAll method successful")
     @Test

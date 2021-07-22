@@ -1,5 +1,6 @@
 package com.luxoft.library.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -14,7 +15,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(callSuper = true)
+@ToString(callSuper = true, exclude = {"authors"})
 public class Book extends AbstractBaseEntity {
 
     private String name;
@@ -31,6 +32,7 @@ public class Book extends AbstractBaseEntity {
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "author_id"))
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
     private Set<Author> authors = new HashSet<>();
 
     public Book(String name, Genre genre) {

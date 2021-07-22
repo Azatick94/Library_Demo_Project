@@ -1,8 +1,8 @@
 package com.luxoft.library.controllers;
 
 import com.luxoft.library.controllers.testdata.BookData;
-import com.luxoft.library.repository.AuthorRepository;
-import com.luxoft.library.repository.BookRepository;
+import com.luxoft.library.repository.datajpa.BookRepository;
+import com.luxoft.library.repository.jpa.JpaAuthorRepository;
 import com.luxoft.library.service.BookService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +13,9 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 // example webmvc test with partial spring boot Component Scan
@@ -30,7 +30,7 @@ class BookControllerTest {
     private BookRepository bookRepo;
 
     @MockBean
-    private AuthorRepository authorRepo;
+    private JpaAuthorRepository authorRepo;
 
     @Test
     void getAll() throws Exception {

@@ -2,8 +2,8 @@ package com.luxoft.library.service;
 
 import com.luxoft.library.model.Author;
 import com.luxoft.library.model.Book;
-import com.luxoft.library.repository.AuthorRepository;
-import com.luxoft.library.repository.BookRepository;
+import com.luxoft.library.repository.datajpa.BookRepository;
+import com.luxoft.library.repository.jpa.JpaAuthorRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,9 +13,9 @@ import java.util.Optional;
 public class BookService {
 
     private final BookRepository bookRepo;
-    private final AuthorRepository authorRepo;
+    private final JpaAuthorRepository authorRepo;
 
-    public BookService(BookRepository bookRepo, AuthorRepository authorRepo) {
+    public BookService(BookRepository bookRepo, JpaAuthorRepository authorRepo) {
         this.bookRepo = bookRepo;
         this.authorRepo = authorRepo;
     }

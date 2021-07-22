@@ -13,5 +13,13 @@ public class AbstractBaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    protected Integer id;
+
+    public boolean isNew() {
+        return getId() == null;
+    }
+
+    public Integer getId() {
+        return id;
+    }
 }
