@@ -11,12 +11,17 @@ import java.util.Set;
 
 @Entity
 @Table(name = "books", uniqueConstraints = {@UniqueConstraint(columnNames = {"name"}, name = "unique_book_name")})
-@Getter
-@Setter
-@AllArgsConstructor
+@Data
+//@Getter
+//@Setter
+//@AllArgsConstructor
 @NoArgsConstructor
-@ToString(callSuper = true, exclude = {"authors"})
-public class Book extends AbstractBaseEntity {
+@ToString(exclude = {"authors"})
+public class Book {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    protected Integer id;
 
     private String name;
 
@@ -38,5 +43,9 @@ public class Book extends AbstractBaseEntity {
     public Book(String name, Genre genre) {
         this.name = name;
         this.genre = genre;
+    }
+
+    public boolean isNew() {
+        return getId() == null;
     }
 }

@@ -1,22 +1,20 @@
 package com.luxoft.library.service;
 
 import com.luxoft.library.model.Author;
-import com.luxoft.library.repository.jpa.JpaAuthorRepository;
+import com.luxoft.library.repository.BaseAuthorRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AuthorService {
+@Transactional
+public class AuthorService implements BaseService<Author> {
 
-    //    private final AuthorRepository authorRepo;
-    private final JpaAuthorRepository authorRepo;
+    private final BaseAuthorRepository authorRepo;
 
-//        public AuthorService(AuthorRepository authorRepo) {
-//        this.authorRepo = authorRepo;
-//    }
-    public AuthorService(JpaAuthorRepository authorRepo) {
+    public AuthorService(BaseAuthorRepository authorRepo) {
         this.authorRepo = authorRepo;
     }
 

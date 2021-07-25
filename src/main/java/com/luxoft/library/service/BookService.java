@@ -2,20 +2,22 @@ package com.luxoft.library.service;
 
 import com.luxoft.library.model.Author;
 import com.luxoft.library.model.Book;
-import com.luxoft.library.repository.datajpa.BookRepository;
-import com.luxoft.library.repository.jpa.JpaAuthorRepository;
+import com.luxoft.library.repository.BaseAuthorRepository;
+import com.luxoft.library.repository.BaseBookRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class BookService {
+@Transactional
+public class BookService implements BaseService<Book> {
 
-    private final BookRepository bookRepo;
-    private final JpaAuthorRepository authorRepo;
+    private final BaseBookRepository bookRepo;
+    private final BaseAuthorRepository authorRepo;
 
-    public BookService(BookRepository bookRepo, JpaAuthorRepository authorRepo) {
+    public BookService(BaseBookRepository bookRepo, BaseAuthorRepository authorRepo) {
         this.bookRepo = bookRepo;
         this.authorRepo = authorRepo;
     }
@@ -28,6 +30,7 @@ public class BookService {
         return bookRepo.findById(id);
     }
 
+    @Transactional
     public boolean deleteById(Integer id) {
         Optional<Book> book = bookRepo.findById(id);
         boolean status = book.isPresent();
@@ -37,10 +40,12 @@ public class BookService {
         return status;
     }
 
+    @Transactional
     public void create(Book book) {
         bookRepo.save(book);
     }
 
+    @Transactional
     public boolean update(Integer id, Book book) {
         // TODO case when book Genre Id not Valid
         boolean b = bookRepo.findById(id).isPresent();

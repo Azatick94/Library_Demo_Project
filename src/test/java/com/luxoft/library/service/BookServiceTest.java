@@ -1,11 +1,9 @@
-package com.luxoft.library.controllers;
+package com.luxoft.library.service;
 
 import com.luxoft.library.controllers.testdata.BookData;
 import com.luxoft.library.model.Book;
 import com.luxoft.library.model.Genre;
-import com.luxoft.library.repository.datajpa.BookRepository;
-import com.luxoft.library.service.BookService;
-import org.junit.jupiter.api.Disabled;
+import com.luxoft.library.repository.jpa.JpaBookRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,7 +26,7 @@ class BookServiceTest {
 
     // mock repository
     @Mock
-    private BookRepository bookRepo;
+    private JpaBookRepository bookRepo;
 
     @InjectMocks
     private BookService bookService;

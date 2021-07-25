@@ -13,10 +13,13 @@ import java.util.Set;
 @Entity
 @Table(name = "authors", uniqueConstraints = {@UniqueConstraint(columnNames = {"name", "surname"}, name = "unique_author_name_surname")})
 @Data
-//@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true, exclude = {"books"})
+@ToString(exclude = {"books"})
 @NoArgsConstructor
-public class Author extends AbstractBaseEntity {
+public class Author {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    protected Integer id;
 
     private String name;
     private String surname;
@@ -36,18 +39,20 @@ public class Author extends AbstractBaseEntity {
         this.info = info;
     }
 
+    public boolean isNew() {
+        return getId() == null;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
         Author author = (Author) o;
-        return getId().equals(author.getId()) && name.equals(author.name) && surname.equals(author.surname) && info.equals(author.info);
+        return Objects.equals(id, author.id) && Objects.equals(name, author.name) && Objects.equals(surname, author.surname) && Objects.equals(info, author.info);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getId(), name, surname, info);
-
+        return Objects.hash(id, name, surname, info);
     }
 }

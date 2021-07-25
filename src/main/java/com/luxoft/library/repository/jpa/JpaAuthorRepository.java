@@ -1,9 +1,8 @@
 package com.luxoft.library.repository.jpa;
 
 import com.luxoft.library.model.Author;
-import com.luxoft.library.repository.BaseRepository;
+import com.luxoft.library.repository.BaseAuthorRepository;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -11,8 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-@Transactional(readOnly = true)
-public class JpaAuthorRepository implements BaseRepository<Author> {
+public class JpaAuthorRepository implements BaseAuthorRepository {
 
     @PersistenceContext
     private EntityManager em;
@@ -25,20 +23,17 @@ public class JpaAuthorRepository implements BaseRepository<Author> {
 
     @Override
     public Optional<Author> findById(int id) {
-        return Optional.ofNullable(em.createQuery("SELECT a FROM Author a JOIN FETCH a.books WHERE a.id=:id", Author.class)
-                .setParameter("id", id).getSingleResult());
+        return Optional.ofNullable(em.find(Author.class, id));
     }
 
     @Override
-    @Transactional
     public boolean deleteById(int id) {
-        return em.createQuery("DELETE FROM Author a WHERE a.id=:id")
-                .setParameter("id", id)
-                .executeUpdate() != 0;
+        Optional<Author> byId = findById(id);
+        em.remove(byId.get());
+        return true;
     }
 
     @Override
-    @Transactional
     public void save(Author author) {
 
         if (author.isNew()) {

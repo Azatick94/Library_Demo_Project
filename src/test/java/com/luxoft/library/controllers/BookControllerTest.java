@@ -1,8 +1,8 @@
 package com.luxoft.library.controllers;
 
 import com.luxoft.library.controllers.testdata.BookData;
-import com.luxoft.library.repository.datajpa.BookRepository;
 import com.luxoft.library.repository.jpa.JpaAuthorRepository;
+import com.luxoft.library.repository.jpa.JpaBookRepository;
 import com.luxoft.library.service.BookService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ class BookControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private BookRepository bookRepo;
+    private JpaBookRepository bookRepo;
 
     @MockBean
     private JpaAuthorRepository authorRepo;

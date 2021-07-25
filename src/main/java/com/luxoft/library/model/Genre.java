@@ -8,13 +8,14 @@ import java.util.List;
 
 @Entity
 @Table(name = "genres", uniqueConstraints = {@UniqueConstraint(columnNames = {"value"}, name = "unique_genre")})
-@Getter
-@Setter
 @NoArgsConstructor
-//@Data
-//@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true, exclude = {"books"})
-public class Genre extends AbstractBaseEntity {
+@Data
+@ToString(exclude = {"books"})
+public class Genre {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     private String value;
 
@@ -26,4 +27,3 @@ public class Genre extends AbstractBaseEntity {
         this.value = value;
     }
 }
-
