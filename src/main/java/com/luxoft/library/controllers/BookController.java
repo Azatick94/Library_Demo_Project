@@ -1,7 +1,9 @@
 package com.luxoft.library.controllers;
 
+import com.luxoft.library.dto.BookTo;
 import com.luxoft.library.model.Book;
 import com.luxoft.library.service.BookService;
+import com.luxoft.library.utils.MainUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +11,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import static com.luxoft.library.utils.MainUtil.getBookTo;
 import static com.luxoft.library.utils.MainUtil.processServiceStatus;
 
 @RestController
@@ -24,15 +28,26 @@ public class BookController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Book> getAll() {
-        return bookService.getAll();
+    public List<BookTo> getAll() {
+        List<Book> books = bookService.getAll();
+        return books.stream().map(MainUtil::getBookTo).collect(Collectors.toList());
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Book> getById(@PathVariable Integer id) {
+    public ResponseEntity<BookTo> getById(@PathVariable Integer id) {
+
         Optional<Book> book = bookService.getById(id);
-        return book.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        BookTo bookTo = null;
+
+        if (book.isPresent()) {
+            bookTo = getBookTo(book.get());
+        }
+
+        if (bookTo == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(bookTo, HttpStatus.OK);
+        }
     }
 
     @DeleteMapping("{id}")
@@ -56,7 +71,6 @@ public class BookController {
 
     @PutMapping(value = "/add_author")
     public ResponseEntity<HttpStatus> addAuthor(@RequestParam("book_id") Integer bookId, @RequestParam("author_id") Integer authorId) {
-        // book_id, author_id connection
         boolean status = bookService.addAuthor(bookId, authorId);
         return processServiceStatus(status);
     }

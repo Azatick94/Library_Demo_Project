@@ -1,6 +1,5 @@
 package com.luxoft.library.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -31,7 +30,6 @@ public class Author {
     // mappedBy - name of parameter from Author class
     @ManyToMany(mappedBy = "authors", fetch = FetchType.LAZY)
     // https://stackoverflow.com/questions/55838173/manytomany-relationship-leads-to-stackoverflow-error
-    @JsonIgnore
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<Book> books = new HashSet<>();
 

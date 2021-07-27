@@ -1,8 +1,8 @@
 package com.luxoft.library.controllers;
 
 import com.luxoft.library.controllers.testdata.BookData;
-import com.luxoft.library.repository.jpa.JpaAuthorRepository;
-import com.luxoft.library.repository.jpa.JpaBookRepository;
+import com.luxoft.library.repository.BaseAuthorRepository;
+import com.luxoft.library.repository.BaseBookRepository;
 import com.luxoft.library.service.BookService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +27,10 @@ class BookControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private JpaBookRepository bookRepo;
+    private BaseBookRepository bookRepo;
 
     @MockBean
-    private JpaAuthorRepository authorRepo;
+    private BaseAuthorRepository authorRepo;
 
     @Test
     void getAll() throws Exception {

@@ -14,9 +14,6 @@ import java.util.Set;
 @Entity
 @Table(name = "books", uniqueConstraints = {@UniqueConstraint(columnNames = {"name"}, name = "unique_book_name")})
 @Data
-//@Getter
-//@Setter
-//@AllArgsConstructor
 @NoArgsConstructor
 @ToString(exclude = {"authors"})
 public class Book  {

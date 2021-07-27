@@ -249,7 +249,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\":\"Alex\",\r\n    \"surname\":\"Alexandrov\",\r\n    \"info\":\"10+ years experience Java Developer\"\r\n}",
+							"raw": "{\r\n    \"name\":\"Alexa\",\r\n    \"surname\":\"Alexandrov\",\r\n    \"info\":\"10+ years experience Java Developer\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
