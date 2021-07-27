@@ -7,6 +7,13 @@ FROM books;
 DELETE
 FROM genres;
 
+// resetting primary key
+ALTER TABLE book_authors ALTER COLUMN id RESTART WITH 1;
+ALTER TABLE authors ALTER COLUMN id RESTART WITH 1;
+ALTER TABLE books ALTER COLUMN id RESTART WITH 1;
+ALTER TABLE genres ALTER COLUMN id RESTART WITH 1;
+
+
 INSERT INTO genres (value)
 VALUES ('ADVENTURE'),
        ('COMIC'),

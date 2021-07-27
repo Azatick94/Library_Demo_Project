@@ -17,20 +17,19 @@ public class JpaBookRepository implements BaseBookRepository {
 
     @Override
     public List<Book> findAll() {
-        return em.createQuery("SELECT b FROM Book b JOIN FETCH b.authors JOIN FETCH b.genre", Book.class)
+        return em.createQuery("SELECT b FROM Book b", Book.class)
                 .getResultList();
     }
 
     @Override
     public Optional<Book> findById(int id) {
-
         return Optional.ofNullable(em.find(Book.class, id));
     }
 
     @Override
     public boolean deleteById(int id) {
         Optional<Book> byId = findById(id);
-        em.remove(byId.get());
+        em.remove(byId.orElse(null));
         return true;
     }
 
@@ -41,7 +40,5 @@ public class JpaBookRepository implements BaseBookRepository {
         } else {
             em.merge(book);
         }
-        em.flush();
     }
-
 }

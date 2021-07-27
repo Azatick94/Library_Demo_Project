@@ -43,6 +43,7 @@ public class AuthorController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
     public void create(@RequestBody Author author) {
         authorService.create(author);
     }

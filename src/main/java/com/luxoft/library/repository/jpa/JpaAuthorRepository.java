@@ -17,7 +17,7 @@ public class JpaAuthorRepository implements BaseAuthorRepository {
 
     @Override
     public List<Author> findAll() {
-        return em.createQuery("SELECT a FROM Author a JOIN FETCH a.books", Author.class)
+        return em.createQuery("SELECT a FROM Author a", Author.class)
                 .getResultList();
     }
 
@@ -29,18 +29,16 @@ public class JpaAuthorRepository implements BaseAuthorRepository {
     @Override
     public boolean deleteById(int id) {
         Optional<Author> byId = findById(id);
-        em.remove(byId.get());
+        em.remove(byId.orElse(null));
         return true;
     }
 
     @Override
     public void save(Author author) {
-
         if (author.isNew()) {
             em.persist(author);
         } else {
             em.merge(author);
         }
-        em.flush();
     }
 }
