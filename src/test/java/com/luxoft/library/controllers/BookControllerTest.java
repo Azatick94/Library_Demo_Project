@@ -4,6 +4,7 @@ import com.luxoft.library.controllers.testdata.BookData;
 import com.luxoft.library.repository.BaseAuthorRepository;
 import com.luxoft.library.repository.BaseBookRepository;
 import com.luxoft.library.service.BookService;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -19,6 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 // example webmvc test with partial spring boot Component Scan
+@Disabled
 @WebMvcTest(BookController.class)
 @Import(BookService.class)
 class BookControllerTest {

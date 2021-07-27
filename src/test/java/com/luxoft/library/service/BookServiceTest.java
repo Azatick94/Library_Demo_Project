@@ -19,26 +19,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-// another way to init Mockito
-//@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @DisplayName("BookService")
 class BookServiceTest {
 
-    // mock repository
     @Mock
     private BaseBookRepository bookRepo;
 
     @InjectMocks
     private BookService bookService;
-
-
-// another way to init Mockito
-//
-//    @BeforeAll
-//    public void init() {
-//        // mockito initialization
-////        MockitoAnnotations.openMocks(this);
-//    }
 
     @DisplayName("getAll method successful")
     @Test
@@ -77,9 +65,8 @@ class BookServiceTest {
         int id = 2;
         when(bookRepo.findById(id)).thenReturn(Optional.empty());
 
-        // action
         bookService.deleteById(id);
-        verify(bookRepo, times(0)).deleteById(id);
+        verify(bookRepo, never()).deleteById(id);
     }
 
 
@@ -114,6 +101,6 @@ class BookServiceTest {
         when(bookRepo.findById(id)).thenReturn(Optional.empty());
 
         bookService.update(id, newBook);
-        verify(bookRepo, times(0)).save(book);
+        verify(bookRepo, never()).save(book);
     }
 }
