@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+import static com.luxoft.library.utils.MainUtil.processOptional;
+
 @Service
 @Transactional
 public class AuthorService implements BaseService<Author> {
@@ -22,35 +24,28 @@ public class AuthorService implements BaseService<Author> {
         return authorRepo.findAll();
     }
 
-    public Optional<Author> getById(Integer id) {
-        return authorRepo.findById(id);
+    public Author getById(Integer id) {
+        Optional<Author> author = authorRepo.findById(id);
+        return processOptional(author, id);
     }
 
-    public boolean deleteById(Integer id) {
+    public void deleteById(Integer id) {
         Optional<Author> author = authorRepo.findById(id);
-        boolean status = author.isPresent();
-        if (status) {
-            boolean b = authorRepo.deleteById(id);
-            if (!b) {
-                status = false;
-            }
-        }
-        return status;
+        processOptional(author, id);
+        authorRepo.deleteById(id);
     }
 
     public void create(Author author) {
         authorRepo.save(author);
     }
 
-    public boolean update(Integer id, Author author) {
-        boolean b = authorRepo.findById(id).isPresent();
-        if (b) {
-            Author currentAuthor = authorRepo.findById(id).get();
-            currentAuthor.setName(author.getName());
-            currentAuthor.setSurname(author.getSurname());
-            currentAuthor.setInfo(author.getInfo());
-            authorRepo.save(currentAuthor);
-        }
-        return b;
+    public void update(Integer id, Author author) {
+        Optional<Author> authorOptional = authorRepo.findById(id);
+        Author currentAuthor = processOptional(authorOptional, id);
+
+        currentAuthor.setName(author.getName());
+        currentAuthor.setSurname(author.getSurname());
+        currentAuthor.setInfo(author.getInfo());
+        authorRepo.save(currentAuthor);
     }
 }

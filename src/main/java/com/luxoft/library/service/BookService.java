@@ -2,13 +2,19 @@ package com.luxoft.library.service;
 
 import com.luxoft.library.model.Author;
 import com.luxoft.library.model.Book;
+import com.luxoft.library.model.Genre;
 import com.luxoft.library.repository.BaseAuthorRepository;
 import com.luxoft.library.repository.BaseBookRepository;
+import com.luxoft.library.repository.jpa.JpaGenresRepository;
+import com.luxoft.library.utils.exceptions.NotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
+import static com.luxoft.library.utils.MainUtil.processOptional;
 
 @Service
 @Transactional
@@ -16,46 +22,53 @@ public class BookService implements BaseService<Book> {
 
     private final BaseBookRepository bookRepo;
     private final BaseAuthorRepository authorRepo;
+    private final JpaGenresRepository genresRepo;
 
-    public BookService(BaseBookRepository bookRepo, BaseAuthorRepository authorRepo) {
+    public BookService(BaseBookRepository bookRepo, BaseAuthorRepository authorRepo, JpaGenresRepository genresRepo) {
         this.bookRepo = bookRepo;
         this.authorRepo = authorRepo;
+        this.genresRepo = genresRepo;
     }
 
     public List<Book> getAll() {
         return bookRepo.findAll();
     }
 
-    public Optional<Book> getById(Integer id) {
-        return bookRepo.findById(id);
+    public Book getById(Integer id) {
+        Optional<Book> book = bookRepo.findById(id);
+        return processOptional(book, id);
     }
 
     @Transactional
-    public boolean deleteById(Integer id) {
+    public void deleteById(Integer id) {
         Optional<Book> book = bookRepo.findById(id);
-        boolean status = book.isPresent();
-        if (status) {
-            bookRepo.deleteById(id);
-        }
-        return status;
+        processOptional(book, id);
+        bookRepo.deleteById(id);
     }
 
     @Transactional
     public void create(Book book) {
-        bookRepo.save(book);
+        Integer genreId = book.getGenre().getId();
+        if (checkGenrePresence(genreId)) {
+            bookRepo.save(book);
+        } else {
+            throw new NotFoundException("Genre Id=" + genreId + " not found!!!");
+        }
     }
 
     @Transactional
-    public boolean update(Integer id, Book book) {
-        // TODO case when book Genre Id not Valid
-        boolean b = bookRepo.findById(id).isPresent();
-        if (b) {
-            Book currentBook = bookRepo.findById(id).get();
+    public void update(Integer id, Book book) {
+        Optional<Book> bookOptional = bookRepo.findById(id);
+        Book currentBook = processOptional(bookOptional, id);
+
+        Integer genreId = book.getGenre().getId();
+        if (checkGenrePresence(genreId)) {
             currentBook.setName(book.getName());
             currentBook.setGenre(book.getGenre());
             bookRepo.save(currentBook);
+        } else {
+            throw new NotFoundException("Genre Id=" + genreId + " not found!!!");
         }
-        return b;
     }
 
     public boolean addAuthor(Integer bookId, Integer authorId) {
@@ -72,11 +85,17 @@ public class BookService implements BaseService<Book> {
     public boolean removeAuthor(Integer bookId, Integer authorId) {
         Optional<Book> book = bookRepo.findById(bookId);
         boolean cond = book.isPresent();
-        // TODO when authorId not present in book Authors list
         if (cond) {
-            book.get().getAuthors().removeIf(a -> a.getId() == authorId);
+            book.get().getAuthors().removeIf(a -> a.getId().equals(authorId));
             bookRepo.save(book.get());
         }
         return cond;
     }
+
+    private boolean checkGenrePresence(Integer genreId) {
+        List<Genre> genreList = genresRepo.findAll();
+        List<Integer> genreIds = genreList.stream().map(Genre::getId).collect(Collectors.toList());
+        return genreIds.contains(genreId);
+    }
+
 }

@@ -10,11 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.luxoft.library.utils.MainUtil.getAuthorTo;
-import static com.luxoft.library.utils.MainUtil.processServiceStatus;
 
 @RestController
 @RequestMapping("/authors")
@@ -35,25 +33,16 @@ public class AuthorController {
 
     @GetMapping("{id}")
     public ResponseEntity<AuthorTo> getById(@PathVariable Integer id) {
-        Optional<Author> author = authorService.getById(id);
-        AuthorTo authorTo = null;
-
-        if (author.isPresent()) {
-            authorTo = getAuthorTo(author.get());
-        }
-
-        if (authorTo == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } else {
-            return new ResponseEntity<>(authorTo, HttpStatus.OK);
-        }
+        Author author = authorService.getById(id);
+        AuthorTo authorTo = getAuthorTo(author);
+        return new ResponseEntity<>(authorTo, HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<HttpStatus> deleteById(@PathVariable Integer id) {
-        boolean status = authorService.deleteById(id);
-        return processServiceStatus(status);
+        authorService.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -64,7 +53,7 @@ public class AuthorController {
 
     @PutMapping(value = "{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<HttpStatus> update(@PathVariable Integer id, @RequestBody Author author) {
-        boolean status = authorService.update(id, author);
-        return processServiceStatus(status);
+        authorService.update(id, author);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

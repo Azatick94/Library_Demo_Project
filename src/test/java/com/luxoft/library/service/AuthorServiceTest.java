@@ -2,6 +2,8 @@ package com.luxoft.library.service;
 
 import com.luxoft.library.model.Author;
 import com.luxoft.library.repository.BaseAuthorRepository;
+import com.luxoft.library.utils.exceptions.NotFoundException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,7 +29,10 @@ class AuthorServiceTest {
     @Test
     void shouldNotDeleteAnything() {
         int id = 999;
-        authorService.deleteById(id);
+        Assertions.assertThrows(NotFoundException.class, () -> {
+            authorService.deleteById(id);
+        });
+
         // check that repository delete method wasn't called
         verify(authorRepo, never()).deleteById(id);
     }
@@ -38,7 +43,10 @@ class AuthorServiceTest {
         int id = 999;
         Author authorToUpdate = new Author("updatedName", "updatedSurname", "SomeInfo");
         authorToUpdate.setId(id);
-        authorService.update(id, authorToUpdate);
+        Assertions.assertThrows(NotFoundException.class, () -> {
+            authorService.update(id, authorToUpdate);
+        });
+
         // check that repository save method wasn't called
         verify(authorRepo, never()).save(authorToUpdate);
     }

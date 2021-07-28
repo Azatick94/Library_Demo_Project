@@ -3,6 +3,7 @@ package com.luxoft.library.controllers;
 import com.luxoft.library.controllers.testdata.BookData;
 import com.luxoft.library.repository.BaseAuthorRepository;
 import com.luxoft.library.repository.BaseBookRepository;
+import com.luxoft.library.repository.jpa.JpaGenresRepository;
 import com.luxoft.library.service.BookService;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -33,6 +34,9 @@ class BookControllerTest {
 
     @MockBean
     private BaseAuthorRepository authorRepo;
+
+    @MockBean
+    private JpaGenresRepository genreRepo;
 
     @Test
     void getAll() throws Exception {

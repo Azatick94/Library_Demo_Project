@@ -6,9 +6,11 @@ import com.luxoft.library.dto.BookForAuthorTo;
 import com.luxoft.library.dto.BookTo;
 import com.luxoft.library.model.Author;
 import com.luxoft.library.model.Book;
+import com.luxoft.library.utils.exceptions.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -19,6 +21,14 @@ public class MainUtil {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    public static <T> T processOptional(Optional<T> t, Integer id) {
+        if (t.isPresent()) {
+            return t.get();
+        } else {
+            throw new NotFoundException("Id=" + id + " not found!!!");
         }
     }
 

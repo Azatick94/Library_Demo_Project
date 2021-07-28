@@ -23,7 +23,16 @@ public class Genre {
     @OneToMany(mappedBy = "genre", cascade = CascadeType.ALL)
     private List<Book> books;
 
+    public Genre(Integer id) {
+        this.id = id;
+    }
+
     public Genre(String value) {
+        this.value = value;
+    }
+
+    public Genre(Integer id, String value) {
+        this.id = id;
         this.value = value;
     }
 }

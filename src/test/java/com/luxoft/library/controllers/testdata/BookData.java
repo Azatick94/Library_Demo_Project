@@ -8,10 +8,10 @@ import java.util.List;
 
 public class BookData {
 
-    public static Book bookId1 = new Book("BookToDelete", new Genre("genre"));
-    public static Book bookId2 = new Book("BookToDelete", new Genre("genre"));
-    public static Book bookId3 = new Book("BookNotUpdated", new Genre("genre"));
-    public static Book bookId4 = new Book("BookNotUpdated", new Genre("genre"));
+    public static Book bookId1 = new Book("BookToDelete", new Genre(1));
+    public static Book bookId2 = new Book("BookToDelete", new Genre(1));
+    public static Book bookId3 = new Book("BookNotUpdated", new Genre(1));
+    public static Book bookId4 = new Book("BookNotUpdated", new Genre(1));
 
     static {
         bookId1.setId(1);

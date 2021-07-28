@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.luxoft.library.utils.MainUtil.getBookTo;
@@ -35,26 +34,16 @@ public class BookController {
 
     @GetMapping("{id}")
     public ResponseEntity<BookTo> getById(@PathVariable Integer id) {
-
-        Optional<Book> book = bookService.getById(id);
-        BookTo bookTo = null;
-
-        if (book.isPresent()) {
-            bookTo = getBookTo(book.get());
-        }
-
-        if (bookTo == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } else {
-            return new ResponseEntity<>(bookTo, HttpStatus.OK);
-        }
+        Book book = bookService.getById(id);
+        BookTo bookTo = getBookTo(book);
+        return new ResponseEntity<>(bookTo, HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<HttpStatus> deleteById(@PathVariable Integer id) {
-        boolean status = bookService.deleteById(id);
-        return processServiceStatus(status);
+        bookService.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -65,8 +54,8 @@ public class BookController {
 
     @PutMapping(value = "{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<HttpStatus> update(@PathVariable Integer id, @RequestBody Book book) {
-        boolean status = bookService.update(id, book);
-        return processServiceStatus(status);
+        bookService.update(id, book);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping(value = "/add_author")
