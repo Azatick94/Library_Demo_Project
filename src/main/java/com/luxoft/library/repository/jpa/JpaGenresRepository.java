@@ -27,8 +27,7 @@ public class JpaGenresRepository implements BaseRepository<Genre> {
     }
 
     @Override
-    public boolean deleteById(int id) {
-        return false;
+    public void deleteById(int id) {
     }
 
     @Override

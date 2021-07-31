@@ -8,7 +8,7 @@ public interface BaseRepository<T> {
 
     Optional<T> findById(int id);
 
-    boolean deleteById(int id);
+    void deleteById(int id);
 
     void save(T t);
 }

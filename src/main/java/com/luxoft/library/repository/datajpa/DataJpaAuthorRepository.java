@@ -30,9 +30,8 @@ public class DataJpaAuthorRepository implements BaseAuthorRepository {
     }
 
     @Override
-    public boolean deleteById(int id) {
+    public void deleteById(int id) {
         crudAuthorRepository.deleteById(id);
-        return true;
     }
 
     @Override

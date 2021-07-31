@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 import static com.luxoft.library.utils.MainUtil.processOptional;
 
 @Service
-@Transactional
 public class BookService implements BaseService<Book> {
 
     private final BaseBookRepository bookRepo;
@@ -30,15 +29,22 @@ public class BookService implements BaseService<Book> {
         this.genresRepo = genresRepo;
     }
 
+    @Override
     public List<Book> getAll() {
         return bookRepo.findAll();
     }
 
+    @Override
     public Book getById(Integer id) {
         Optional<Book> book = bookRepo.findById(id);
         return processOptional(book, id);
     }
 
+    public List<Book> getByAuthorId(Integer authorId) {
+        return bookRepo.findByAuthorId(authorId);
+    }
+
+    @Override
     @Transactional
     public void deleteById(Integer id) {
         Optional<Book> book = bookRepo.findById(id);
@@ -46,6 +52,7 @@ public class BookService implements BaseService<Book> {
         bookRepo.deleteById(id);
     }
 
+    @Override
     @Transactional
     public void create(Book book) {
         Integer genreId = book.getGenre().getId();
@@ -56,6 +63,7 @@ public class BookService implements BaseService<Book> {
         }
     }
 
+    @Override
     @Transactional
     public void update(Integer id, Book book) {
         Optional<Book> bookOptional = bookRepo.findById(id);
@@ -71,6 +79,7 @@ public class BookService implements BaseService<Book> {
         }
     }
 
+    @Transactional
     public boolean addAuthor(Integer bookId, Integer authorId) {
         Optional<Book> book = bookRepo.findById(bookId);
         Optional<Author> author = authorRepo.findById(authorId);
@@ -82,6 +91,7 @@ public class BookService implements BaseService<Book> {
         return cond;
     }
 
+    @Transactional
     public boolean removeAuthor(Integer bookId, Integer authorId) {
         Optional<Book> book = bookRepo.findById(bookId);
         boolean cond = book.isPresent();

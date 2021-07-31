@@ -39,6 +39,13 @@ public class BookController {
         return new ResponseEntity<>(bookTo, HttpStatus.OK);
     }
 
+    @GetMapping("/by_author/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<BookTo> getByAuthorId(@PathVariable("id") Integer authorId) {
+        List<Book> filteredBooks = bookService.getByAuthorId(authorId);
+        return filteredBooks.stream().map(MainUtil::getBookTo).collect(Collectors.toList());
+    }
+
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<HttpStatus> deleteById(@PathVariable Integer id) {

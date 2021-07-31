@@ -46,6 +46,30 @@
 					"response": []
 				},
 				{
+					"name": "getByAuthorId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{books}}/by_author/:id",
+							"host": [
+								"{{books}}"
+							],
+							"path": [
+								"by_author",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "deleteById",
 					"request": {
 						"method": "DELETE",

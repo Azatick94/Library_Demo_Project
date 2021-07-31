@@ -27,10 +27,9 @@ public class JpaAuthorRepository implements BaseAuthorRepository {
     }
 
     @Override
-    public boolean deleteById(int id) {
+    public void deleteById(int id) {
         Optional<Author> byId = findById(id);
         em.remove(byId.orElse(null));
-        return true;
     }
 
     @Override

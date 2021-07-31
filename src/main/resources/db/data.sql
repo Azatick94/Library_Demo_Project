@@ -36,4 +36,6 @@ VALUES ('Spring in Action', 1),
 -- inserting data to book_authors joint table
 INSERT INTO book_authors (book_id, author_id)
 VALUES (1, 1),
+       (1, 2),
        (2, 2);
+
