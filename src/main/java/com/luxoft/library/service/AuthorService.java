@@ -3,6 +3,7 @@ package com.luxoft.library.service;
 import com.luxoft.library.model.Author;
 import com.luxoft.library.repository.BaseAuthorRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -31,7 +32,7 @@ public class AuthorService implements BaseService<Author> {
     }
 
     @Override
-    @Transactional
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public void deleteById(Integer id) {
         Optional<Author> author = authorRepo.findById(id);
         processOptional(author, id);
@@ -39,13 +40,14 @@ public class AuthorService implements BaseService<Author> {
     }
 
     @Override
-    @Transactional
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public void create(Author author) {
         authorRepo.save(author);
     }
 
     @Override
-    @Transactional
+    // exclude lost update and guaranty findById repeatability
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public void update(Integer id, Author author) {
         Optional<Author> authorOptional = authorRepo.findById(id);
         Author currentAuthor = processOptional(authorOptional, id);

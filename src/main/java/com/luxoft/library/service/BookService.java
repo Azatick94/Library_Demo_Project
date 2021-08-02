@@ -8,6 +8,7 @@ import com.luxoft.library.repository.BaseBookRepository;
 import com.luxoft.library.repository.jpa.JpaGenresRepository;
 import com.luxoft.library.utils.exceptions.NotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -45,7 +46,7 @@ public class BookService implements BaseService<Book> {
     }
 
     @Override
-    @Transactional
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public void deleteById(Integer id) {
         Optional<Book> book = bookRepo.findById(id);
         processOptional(book, id);
@@ -53,7 +54,7 @@ public class BookService implements BaseService<Book> {
     }
 
     @Override
-    @Transactional
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public void create(Book book) {
         Integer genreId = book.getGenre().getId();
         if (checkGenrePresence(genreId)) {
@@ -64,7 +65,7 @@ public class BookService implements BaseService<Book> {
     }
 
     @Override
-    @Transactional
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public void update(Integer id, Book book) {
         Optional<Book> bookOptional = bookRepo.findById(id);
         Book currentBook = processOptional(bookOptional, id);
@@ -79,7 +80,7 @@ public class BookService implements BaseService<Book> {
         }
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public boolean addAuthor(Integer bookId, Integer authorId) {
         Optional<Book> book = bookRepo.findById(bookId);
         Optional<Author> author = authorRepo.findById(authorId);
@@ -91,7 +92,7 @@ public class BookService implements BaseService<Book> {
         return cond;
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     public boolean removeAuthor(Integer bookId, Integer authorId) {
         Optional<Book> book = bookRepo.findById(bookId);
         boolean cond = book.isPresent();
