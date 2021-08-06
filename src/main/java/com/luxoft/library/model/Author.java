@@ -10,7 +10,6 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 @Entity
 @Table(name = "authors", uniqueConstraints = {@UniqueConstraint(columnNames = {"name", "surname"}, name = "unique_author_name_surname")})
@@ -21,14 +20,7 @@ public class Author {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @GenericGenerator(
-//            name = "UUID",
-//            strategy = "org.hibernate.id.UUIDGenerator"
-//    )
-//    protected String id;
     protected Integer id;
-
-    private UUID uuid;
 
     private String name;
     private String surname;
@@ -40,11 +32,6 @@ public class Author {
     // https://stackoverflow.com/questions/55838173/manytomany-relationship-leads-to-stackoverflow-error
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Book> books = new ArrayList<>();
-
-    // uuid random value insertion
-    {
-        this.uuid = UUID.randomUUID();
-    }
 
     public Author(String name, String surname, String info) {
         this.name = name;

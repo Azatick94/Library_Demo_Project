@@ -23,9 +23,9 @@ VALUES ('ADVENTURE'),
        ('OTHER');
 
 -- inserting data to authors
-INSERT INTO authors (uuid, name, surname, info)
-VALUES (random_uuid(), 'Craig', 'Walls', 'Senior engineer with Pivotal as the Spring Social project lead'),
-       (random_uuid(), 'Joshua', 'Bloch',
+INSERT INTO authors (name, surname, info)
+VALUES ('Craig', 'Walls', 'Senior engineer with Pivotal as the Spring Social project lead'),
+       ('Joshua', 'Bloch',
         'American software engineer and a technology author, formerly employed at Sun Microsystems and Google');
 
 -- inserting data to books

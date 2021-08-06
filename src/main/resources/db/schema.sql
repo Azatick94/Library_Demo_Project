@@ -6,7 +6,6 @@ DROP TABLE IF EXISTS books CASCADE;
 CREATE TABLE authors
 (
     id      INTEGER PRIMARY KEY AUTO_INCREMENT,
-    uuid    VARCHAR,
     name    VARCHAR,
     surname VARCHAR,
     info    VARCHAR(1000)
