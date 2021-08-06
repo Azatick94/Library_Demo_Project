@@ -7,7 +7,7 @@ FROM books;
 DELETE
 FROM genres;
 
-// resetting primary key
+-- resetting primary key
 ALTER TABLE book_authors ALTER COLUMN id RESTART WITH 1;
 ALTER TABLE authors ALTER COLUMN id RESTART WITH 1;
 ALTER TABLE books ALTER COLUMN id RESTART WITH 1;
@@ -23,9 +23,9 @@ VALUES ('ADVENTURE'),
        ('OTHER');
 
 -- inserting data to authors
-INSERT INTO authors (name, surname, info)
-VALUES ('Craig', 'Walls', 'Senior engineer with Pivotal as the Spring Social project lead'),
-       ('Joshua', 'Bloch',
+INSERT INTO authors (uuid, name, surname, info)
+VALUES (random_uuid(), 'Craig', 'Walls', 'Senior engineer with Pivotal as the Spring Social project lead'),
+       (random_uuid(), 'Joshua', 'Bloch',
         'American software engineer and a technology author, formerly employed at Sun Microsystems and Google');
 
 -- inserting data to books

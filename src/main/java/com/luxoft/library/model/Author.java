@@ -7,9 +7,10 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Table(name = "authors", uniqueConstraints = {@UniqueConstraint(columnNames = {"name", "surname"}, name = "unique_author_name_surname")})
@@ -20,7 +21,14 @@ public class Author {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GenericGenerator(
+//            name = "UUID",
+//            strategy = "org.hibernate.id.UUIDGenerator"
+//    )
+//    protected String id;
     protected Integer id;
+
+    private UUID uuid;
 
     private String name;
     private String surname;
@@ -31,7 +39,12 @@ public class Author {
     @ManyToMany(mappedBy = "authors", fetch = FetchType.LAZY)
     // https://stackoverflow.com/questions/55838173/manytomany-relationship-leads-to-stackoverflow-error
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private Set<Book> books = new HashSet<>();
+    private List<Book> books = new ArrayList<>();
+
+    // uuid random value insertion
+    {
+        this.uuid = UUID.randomUUID();
+    }
 
     public Author(String name, String surname, String info) {
         this.name = name;
@@ -48,11 +61,11 @@ public class Author {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Author author = (Author) o;
-        return Objects.equals(id, author.id) && Objects.equals(name, author.name) && Objects.equals(surname, author.surname) && Objects.equals(info, author.info);
+        return Objects.equals(id, author.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, surname, info);
+        return Objects.hash(id);
     }
 }

@@ -6,6 +6,7 @@ DROP TABLE IF EXISTS books CASCADE;
 CREATE TABLE authors
 (
     id      INTEGER PRIMARY KEY AUTO_INCREMENT,
+    uuid    VARCHAR,
     name    VARCHAR,
     surname VARCHAR,
     info    VARCHAR(1000)
@@ -25,8 +26,8 @@ CREATE UNIQUE INDEX unique_genre ON genres (value);
 -- books table
 CREATE TABLE books
 (
-    id    INTEGER PRIMARY KEY AUTO_INCREMENT,
-    name  VARCHAR,
+    id       INTEGER PRIMARY KEY AUTO_INCREMENT,
+    name     VARCHAR,
     genre_id INTEGER,
     FOREIGN KEY (genre_id) REFERENCES genres (id)
 );
