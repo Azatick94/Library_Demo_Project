@@ -8,8 +8,8 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "books", uniqueConstraints = {@UniqueConstraint(columnNames = {"name"}, name = "unique_book_name")})
@@ -37,7 +37,7 @@ public class Book  {
             inverseJoinColumns = @JoinColumn(name = "author_id"))
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
-    private Set<Author> authors = new HashSet<>();
+    private List<Author> authors = new ArrayList<>();
 
     public Book(String name, Genre genre) {
         this.name = name;
