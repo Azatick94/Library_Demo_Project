@@ -1,9 +1,9 @@
 package com.luxoft.library.controllers;
 
 import com.luxoft.library.dto.AuthorTo;
+import com.luxoft.library.dto.mappings.AuthorMappingUtil;
 import com.luxoft.library.model.Author;
 import com.luxoft.library.service.AuthorService;
-import com.luxoft.library.utils.MainUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,29 +12,29 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.luxoft.library.utils.MainUtil.getAuthorTo;
-
 @RestController
 @RequestMapping("/authors")
 public class AuthorController {
 
     private final AuthorService authorService;
+    private final AuthorMappingUtil authorMappingUtil;
 
-    public AuthorController(AuthorService authorService) {
+    public AuthorController(AuthorService authorService, AuthorMappingUtil authorMappingUtil) {
         this.authorService = authorService;
+        this.authorMappingUtil = authorMappingUtil;
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<AuthorTo> getAll() {
         List<Author> authors = authorService.getAll();
-        return authors.stream().map(MainUtil::getAuthorTo).collect(Collectors.toList());
+        return authors.stream().map(authorMappingUtil::getAuthorTo).collect(Collectors.toList());
     }
 
     @GetMapping("{id}")
     public ResponseEntity<AuthorTo> getById(@PathVariable Integer id) {
         Author author = authorService.getById(id);
-        AuthorTo authorTo = getAuthorTo(author);
+        AuthorTo authorTo = authorMappingUtil.getAuthorTo(author);
         return new ResponseEntity<>(authorTo, HttpStatus.OK);
     }
 

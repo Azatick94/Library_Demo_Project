@@ -1,9 +1,9 @@
 package com.luxoft.library.controllers;
 
 import com.luxoft.library.dto.BookTo;
+import com.luxoft.library.dto.mappings.BookMappingUtil;
 import com.luxoft.library.model.Book;
 import com.luxoft.library.service.BookService;
-import com.luxoft.library.utils.MainUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.luxoft.library.utils.MainUtil.getBookTo;
 import static com.luxoft.library.utils.MainUtil.processServiceStatus;
 
 @RestController
@@ -20,22 +19,24 @@ import static com.luxoft.library.utils.MainUtil.processServiceStatus;
 public class BookController {
 
     private final BookService bookService;
+    private final BookMappingUtil bookMappingUtil;
 
-    public BookController(BookService bookService) {
+    public BookController(BookService bookService, BookMappingUtil bookMappingUtil) {
         this.bookService = bookService;
+        this.bookMappingUtil = bookMappingUtil;
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<BookTo> getAll() {
         List<Book> books = bookService.getAll();
-        return books.stream().map(MainUtil::getBookTo).collect(Collectors.toList());
+        return books.stream().map(bookMappingUtil::getBookTo).collect(Collectors.toList());
     }
 
     @GetMapping("{id}")
     public ResponseEntity<BookTo> getById(@PathVariable Integer id) {
         Book book = bookService.getById(id);
-        BookTo bookTo = getBookTo(book);
+        BookTo bookTo = bookMappingUtil.getBookTo(book);
         return new ResponseEntity<>(bookTo, HttpStatus.OK);
     }
 
@@ -43,7 +44,7 @@ public class BookController {
     @ResponseStatus(HttpStatus.OK)
     public List<BookTo> getByAuthorId(@PathVariable("id") Integer authorId) {
         List<Book> filteredBooks = bookService.getByAuthorId(authorId);
-        return filteredBooks.stream().map(MainUtil::getBookTo).collect(Collectors.toList());
+        return filteredBooks.stream().map(bookMappingUtil::getBookTo).collect(Collectors.toList());
     }
 
     @DeleteMapping("{id}")

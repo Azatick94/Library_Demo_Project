@@ -21,6 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 // example webmvc test with partial spring boot Component Scan
+@Disabled
 @WebMvcTest(BookController.class)
 @Import(BookService.class)
 class BookControllerTest {
