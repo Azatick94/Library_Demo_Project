@@ -8,13 +8,13 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
-@ManagedResource(objectName = "com.luxoft.utils.jmx.app:category=MBeans,name=AppControllingBean", description = "App Controlling Bean")
+@ManagedResource(objectName = "com.luxoft.utils.jmx.app:category=MBeans,name=AppControllingMBean", description = "App Controlling Bean")
 @Component
-public class AppControllingBean {
+public class AppControllingMBean {
 
     private final ApplicationContext context;
 
-    public AppControllingBean(ApplicationContext context) {
+    public AppControllingMBean(ApplicationContext context) {
         this.context = context;
     }
 
