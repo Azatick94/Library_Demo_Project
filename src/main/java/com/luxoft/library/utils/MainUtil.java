@@ -4,7 +4,10 @@ import com.luxoft.library.utils.exceptions.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.Objects;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MainUtil {
 
@@ -22,5 +25,11 @@ public class MainUtil {
         } else {
             throw new NotFoundException("Id=" + id + " not found!!!");
         }
+    }
+
+    public static String parser(String regex, String text) {
+        Matcher m = Pattern.compile(regex).matcher(text);
+        String result = m.find() ? m.group() : null;
+        return Objects.requireNonNull(result).substring(1, result.length() - 1);
     }
 }
