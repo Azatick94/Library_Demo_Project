@@ -4,15 +4,19 @@ import com.luxoft.library.dto.AuthorTo;
 import com.luxoft.library.dto.mappings.AuthorMappingUtil;
 import com.luxoft.library.model.Author;
 import com.luxoft.library.service.AuthorService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+@Tag(name = "Authors", description = "Authors API")
+@PreAuthorize("isAuthenticated()")
 @RequestMapping("/authors")
 public class AuthorController {
 
@@ -32,6 +36,7 @@ public class AuthorController {
     }
 
     @GetMapping("{id}")
+    @PreAuthorize("hasRole('USER') and hasRole('ADMIN')")
     public ResponseEntity<AuthorTo> getById(@PathVariable Integer id) {
         Author author = authorService.getById(id);
         AuthorTo authorTo = authorMappingUtil.getAuthorTo(author);
@@ -39,6 +44,7 @@ public class AuthorController {
     }
 
     @DeleteMapping("{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<HttpStatus> deleteById(@PathVariable Integer id) {
         authorService.deleteById(id);
@@ -46,12 +52,14 @@ public class AuthorController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     public void create(@RequestBody Author author) {
         authorService.create(author);
     }
 
     @PutMapping(value = "{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<HttpStatus> update(@PathVariable Integer id, @RequestBody Author author) {
         authorService.update(id, author);
         return new ResponseEntity<>(HttpStatus.OK);
