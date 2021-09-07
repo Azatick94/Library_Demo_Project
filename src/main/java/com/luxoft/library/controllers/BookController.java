@@ -38,7 +38,7 @@ public class BookController {
     }
 
     @GetMapping("{id}")
-    @PreAuthorize("hasRole('USER') and hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<BookTo> getById(@PathVariable Integer id) {
         Book book = bookService.getById(id);
         BookTo bookTo = bookMappingUtil.getBookTo(book);

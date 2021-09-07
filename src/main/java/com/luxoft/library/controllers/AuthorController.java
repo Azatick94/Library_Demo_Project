@@ -36,7 +36,7 @@ public class AuthorController {
     }
 
     @GetMapping("{id}")
-    @PreAuthorize("hasRole('USER') and hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<AuthorTo> getById(@PathVariable Integer id) {
         Author author = authorService.getById(id);
         AuthorTo authorTo = authorMappingUtil.getAuthorTo(author);
