@@ -4,6 +4,7 @@ import com.luxoft.library.dto.BookTo;
 import com.luxoft.library.dto.mappings.BookMappingUtil;
 import com.luxoft.library.model.Book;
 import com.luxoft.library.service.BookService;
+import com.luxoft.library.utils.logging.AspectLogger;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -29,6 +30,7 @@ public class BookController {
     }
 
     @GetMapping
+    @AspectLogger
     @ResponseStatus(HttpStatus.OK)
     public List<BookTo> getAll() {
         List<Book> books = bookService.getAll();
@@ -36,6 +38,7 @@ public class BookController {
     }
 
     @GetMapping("{id}")
+    @AspectLogger(containsResponseEntity = true)
     public ResponseEntity<BookTo> getById(@PathVariable Integer id) {
         Book book = bookService.getById(id);
         BookTo bookTo = bookMappingUtil.getBookTo(book);

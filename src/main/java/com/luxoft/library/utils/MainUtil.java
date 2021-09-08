@@ -4,7 +4,6 @@ import com.luxoft.library.utils.exceptions.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -27,9 +26,18 @@ public class MainUtil {
         }
     }
 
-    public static String parser(String regex, String text) {
+    public static String parserShortClassName(String text) {
+        String regex = "\\.[\\w]+\\(";
         Matcher m = Pattern.compile(regex).matcher(text);
-        String result = m.find() ? m.group() : null;
-        return Objects.requireNonNull(result).substring(1, result.length() - 1);
+        String result = m.find() ? m.group() : "";
+        return result.substring(1, result.length() - 1);
+    }
+
+    public static String parserLongClassName(String text) {
+        String regex = "com[\\w\\.]+[\\w]+\\(";
+        Matcher m = Pattern.compile(regex).matcher(text);
+        String result = m.find() ? m.group() : "";
+        int indexOf = result.lastIndexOf(".");
+        return result.substring(0, indexOf);
     }
 }

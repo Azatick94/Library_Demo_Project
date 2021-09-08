@@ -4,6 +4,7 @@ import com.luxoft.library.dto.AuthorTo;
 import com.luxoft.library.dto.mappings.AuthorMappingUtil;
 import com.luxoft.library.model.Author;
 import com.luxoft.library.service.AuthorService;
+import com.luxoft.library.utils.logging.AspectLogger;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,6 +28,7 @@ public class AuthorController {
     }
 
     @GetMapping
+    @AspectLogger
     @ResponseStatus(HttpStatus.OK)
     public List<AuthorTo> getAll() {
         List<Author> authors = authorService.getAll();
@@ -34,6 +36,7 @@ public class AuthorController {
     }
 
     @GetMapping("{id}")
+    @AspectLogger(containsResponseEntity = true)
     public ResponseEntity<AuthorTo> getById(@PathVariable Integer id) {
         Author author = authorService.getById(id);
         AuthorTo authorTo = authorMappingUtil.getAuthorTo(author);
