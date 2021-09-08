@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,7 +17,6 @@ import static com.luxoft.library.utils.MainUtil.processServiceStatus;
 
 @RestController
 @Tag(name = "Books", description = "Books API")
-@PreAuthorize("isAuthenticated()")
 @RequestMapping("/books")
 public class BookController {
 
@@ -38,7 +36,6 @@ public class BookController {
     }
 
     @GetMapping("{id}")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<BookTo> getById(@PathVariable Integer id) {
         Book book = bookService.getById(id);
         BookTo bookTo = bookMappingUtil.getBookTo(book);
@@ -53,7 +50,6 @@ public class BookController {
     }
 
     @DeleteMapping("{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<HttpStatus> deleteById(@PathVariable Integer id) {
         bookService.deleteById(id);
@@ -61,28 +57,24 @@ public class BookController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     public void create(@RequestBody Book book) {
         bookService.create(book);
     }
 
     @PutMapping(value = "{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<HttpStatus> update(@PathVariable Integer id, @RequestBody Book book) {
         bookService.update(id, book);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping(value = "/add_author")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<HttpStatus> addAuthor(@RequestParam("book_id") Integer bookId, @RequestParam("author_id") Integer authorId) {
         boolean status = bookService.addAuthor(bookId, authorId);
         return processServiceStatus(status);
     }
 
     @PutMapping(value = "/remove_author")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<HttpStatus> removeAuthor(@RequestParam("book_id") Integer bookId, @RequestParam("author_id") Integer authorId) {
         boolean status = bookService.removeAuthor(bookId, authorId);
         return processServiceStatus(status);

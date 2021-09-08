@@ -5,8 +5,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -22,8 +22,6 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
-// https://stackoverflow.com/questions/32442408/preauthorize-not-working-on-controller/32443631
-@EnableGlobalMethodSecurity(prePostEnabled = true) // to enable security annotation on controllers
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final Environment environment;
@@ -36,15 +34,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http.authorizeRequests()
-                .anyRequest().authenticated()
+                // by_author has higher priority than book/**
+                .antMatchers(HttpMethod.GET, "/books/by_author/**").hasAnyRole("USER", "ADMIN")
+                .antMatchers(HttpMethod.GET, "/books/**", "/authors/**").permitAll()
+                .antMatchers(HttpMethod.DELETE, "/books/**", "/authors/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST, "/books/**", "/authors/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, "/books/**", "/authors/**").hasRole("ADMIN")
                 .and().httpBasic()
+                .and().logout()
                 .and().csrf().disable();
-
-        // another approach using formLogin
-        //        http.authorizeRequests()
-//                .anyRequest().authenticated()
-//                .and().formLogin()
-//                .and().csrf().disable();
 //         csrf disable gives access to post/delete operations
     }
 
@@ -68,7 +66,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    // example how to create UserDetails
     @Bean
     @Profile(value = "security_2nd_approach")
     public UserDetailsService users() {
@@ -84,5 +81,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .build();
         return new InMemoryUserDetailsManager(user, admin);
     }
-
 }
