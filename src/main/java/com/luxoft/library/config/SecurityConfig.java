@@ -1,5 +1,6 @@
 package com.luxoft.library.config;
 
+import com.luxoft.library.filters.AfterAuthenticationCustomFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import java.util.Arrays;
 import java.util.List;
@@ -44,6 +46,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().logout()
                 .and().csrf().disable();
 //         csrf disable gives access to post/delete operations
+
+        http.addFilterAfter(new AfterAuthenticationCustomFilter(), BasicAuthenticationFilter.class);
     }
 
     @Autowired

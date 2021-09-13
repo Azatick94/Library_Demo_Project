@@ -21,5 +21,4 @@ public class BookMappingUtil {
     private AuthorForBookTo getAuthorForBookTo(Author author) {
         return new AuthorForBookTo(author.getName(), author.getSurname(), author.getInfo());
     }
-
 }

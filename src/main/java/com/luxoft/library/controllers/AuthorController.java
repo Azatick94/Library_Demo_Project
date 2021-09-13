@@ -36,7 +36,7 @@ public class AuthorController {
     }
 
     @GetMapping("{id}")
-    @AspectLogger(containsResponseEntity = true)
+    @AspectLogger
     public ResponseEntity<AuthorTo> getById(@PathVariable Integer id) {
         Author author = authorService.getById(id);
         AuthorTo authorTo = authorMappingUtil.getAuthorTo(author);

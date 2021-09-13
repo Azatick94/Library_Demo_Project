@@ -38,7 +38,7 @@ public class BookController {
     }
 
     @GetMapping("{id}")
-    @AspectLogger(containsResponseEntity = true)
+    @AspectLogger
     public ResponseEntity<BookTo> getById(@PathVariable Integer id) {
         Book book = bookService.getById(id);
         BookTo bookTo = bookMappingUtil.getBookTo(book);

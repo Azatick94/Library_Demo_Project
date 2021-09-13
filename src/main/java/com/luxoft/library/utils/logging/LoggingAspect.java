@@ -6,13 +6,12 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.CodeSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
-import java.util.Objects;
 
-import static com.luxoft.library.utils.MainUtil.*;
+import static com.luxoft.library.utils.MainUtil.parserLongClassName;
+import static com.luxoft.library.utils.MainUtil.parserShortClassName;
 
 @Aspect
 @Component
@@ -21,7 +20,7 @@ public class LoggingAspect {
     @Around("@annotation(aspectLogger)")
     public Object aroundAdvice(ProceedingJoinPoint jp, AspectLogger aspectLogger) throws Throwable {
 
-        ResponseEntity<?> proceedResult = null;
+        Object proceedResult;
 
         String[] args = Arrays.stream(jp.getArgs())
                 .map(Object::toString)
@@ -58,12 +57,8 @@ public class LoggingAspect {
 
         long start = System.currentTimeMillis();
 
-        if (aspectLogger.containsResponseEntity()) {
-            proceedResult = (ResponseEntity<?>) jp.proceed();
-            addResponseInformationFromResponseEntity(builder, proceedResult);
-        } else {
-            jp.proceed();
-        }
+        // proceeding
+        proceedResult = jp.proceed();
 
         long executionTime = System.currentTimeMillis() - start;
         builder.append("\n\t* execution time - ").append(executionTime).append(" ms");
@@ -77,10 +72,5 @@ public class LoggingAspect {
         logger.info(builder.toString());
 
         return proceedResult;
-    }
-
-    private void addResponseInformationFromResponseEntity(StringBuilder builder, ResponseEntity<?> response) {
-        builder.append("\n\t* execution status - ").append(response.getStatusCode().value());
-        builder.append("\n\t* execution return response body - ").append(Objects.requireNonNull(response.getBody()));
     }
 }
